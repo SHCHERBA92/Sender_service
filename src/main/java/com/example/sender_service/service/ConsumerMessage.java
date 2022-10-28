@@ -12,12 +12,12 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class ConsumerMessage {
 
-    private final RabbitTemplate template;
     private final ObjectMapper objectMapper;
+    private final MailSender mailSender;
 
-    public ConsumerMessage(RabbitTemplate template, ObjectMapper objectMapper) {
-        this.template = template;
+    public ConsumerMessage(ObjectMapper objectMapper, MailSender mailSender) {
         this.objectMapper = objectMapper;
+        this.mailSender = mailSender;
     }
 
     @RabbitListener(queues = "queueEmail")
@@ -28,8 +28,7 @@ public class ConsumerMessage {
             var email = json.get("email").asText();
             var code = json.get("kod").asText();
 
-            /// Сюда вставляем отправление по почте.
-
+            mailSender.sendMailToAddress(email, code);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
