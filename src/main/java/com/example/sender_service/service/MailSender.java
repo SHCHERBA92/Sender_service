@@ -13,7 +13,7 @@ public class MailSender {
     private String FROM_MAIL;
 
     private final String SUBJECT = "Подтвердите доступ";
-    private final String URL = "http://localhost:8081/check/code";
+    private final String URL = "http://localhost:8081/check/code/";
 
     public MailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
@@ -22,7 +22,7 @@ public class MailSender {
     public void sendMailToAddress(String emailTo, String code){
 
         String text = String.format("Вы зарегестрировались на портале \" Fire-YOGA \"," +
-                " для завершения регистрации перейдите по ссылке %s и введите секретный код = %s", URL, code);
+                " для завершения регистрации перейдите по ссылке %s и введите секретный код = %s", URL+emailTo, code);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(FROM_MAIL);
         simpleMailMessage.setTo(emailTo);
