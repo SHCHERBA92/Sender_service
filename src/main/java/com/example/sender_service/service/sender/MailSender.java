@@ -1,4 +1,4 @@
-package com.example.sender_service.service;
+package com.example.sender_service.service.sender;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MailSender {
+public class MailSender implements Sender{
     private final JavaMailSender javaMailSender;
 
     @Value("${mail.user_name}")
@@ -19,7 +19,8 @@ public class MailSender {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendMailToAddress(String emailTo, String code){
+    @Override
+    public void sendMessToRegistration(String emailTo, String code){
 
         String text = String.format("Вы зарегестрировались на портале \" Fire-YOGA \"," +
                 " для завершения регистрации перейдите по ссылке %s и введите секретный код = %s", URL+emailTo, code);
@@ -29,5 +30,10 @@ public class MailSender {
         simpleMailMessage.setSubject(SUBJECT);
         simpleMailMessage.setText(text);
         javaMailSender.send(simpleMailMessage);
+    }
+
+    @Override
+    public void sendMessToInfo(String to) {
+
     }
 }
